@@ -29,4 +29,19 @@ fruitRouter.get("/:id", (req, res) => {
     res.json(fruits[req.params.id-1]);
 });
 
+fruitRouter.post("/", (req, res) => {
+    fruits.push(req.body);
+    res.json(req.body);
+});
+
+fruitRouter.put("/:id", (req, res) => {
+    fruits[req.params.id-1] = req.body;
+    res.json(req.body);
+})
+
+fruitRouter.delete("/:id", (req, res) => {
+    fruits.splice(req.params.id-1, 1);
+    res.send("Deleted");
+})
+
 module.exports = fruitRouter;
