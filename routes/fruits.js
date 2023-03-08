@@ -1,5 +1,6 @@
 const express = require("express")
 const fruitRouter = express.Router();
+const {check, ValidationResult, validationResult} = require("express-validator");
 
 let fruits = [
     {
@@ -29,9 +30,14 @@ fruitRouter.get("/:id", (req, res) => {
     res.json(fruits[req.params.id-1]);
 });
 
-fruitRouter.post("/", (req, res) => {
-    fruits.push(req.body);
-    res.json(req.body);
+fruitRouter.post("/", [check("color").not().isEmpty().trim()], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()){ 
+        res.json({error: errors.array()});
+    }else{
+        fruits.push(req.body);
+        res.json(req.body);
+    }
 });
 
 fruitRouter.put("/:id", (req, res) => {
